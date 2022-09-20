@@ -1,0 +1,168 @@
+<!--  Code credit goes to OSU and the authors of CS340 starter BSG code as well as the Flask template instructions
+ https://github.com/osu-cs340-ecampus/flask-starter-app
+https://canvas.oregonstate.edu/courses/1879182/assignments/8895208?module_item_id=22241454 -->
+<html>
+<head>
+<title>Purchases</title>
+<link href="/static/style.css" rel="stylesheet" />
+<script src="https://kit.fontawesome.com/2b5a0f3b7b.js" crossorigin="anonymous"></script>
+<script language="JavaScript">
+  function showform(dowhat) {
+    /*
+    * four DIVS: browse, insert, update, delete
+    * this function sets one visible the others not
+    */
+    if (dowhat == 'insert'){
+      document.getElementById('browse').style.display = 'none';
+      document.getElementById('insert').style.display = 'block';
+      document.getElementById('update').style.display = 'none';
+      document.getElementById('delete').style.display = 'none';
+    }
+    else if (dowhat == 'update'){
+      document.getElementById('browse').style.display = 'none';
+      document.getElementById('insert').style.display = 'none';
+      document.getElementById('update').style.display = 'block';
+      document.getElementById('delete').style.display = 'none';
+    }
+    else if (dowhat == 'delete'){
+      document.getElementById('browse').style.display = 'none';
+      document.getElementById('insert').style.display = 'none';
+      document.getElementById('update').style.display = 'none';
+      document.getElementById('delete').style.display = 'block';
+    }
+    else if (dowhat == 'all'){
+      document.getElementById('browse').style.display = 'block';
+      document.getElementById('insert').style.display = 'block';
+      document.getElementById('update').style.display = 'block';
+      document.getElementById('delete').style.display = 'block';
+    }
+    else { //by default display browse
+      document.getElementById('browse').style.display = 'block';
+      document.getElementById('insert').style.display = 'none';
+      document.getElementById('update').style.display = 'none';
+      document.getElementById('delete').style.display = 'none';
+    }
+  }
+  function newPurchase() { showform('insert'); }
+  function itemizedPurchase() { showform('itemizedInsert'); }
+  function updatePurchase(pid) { showform('update'); }
+  function deletePurchase(pid) { showform ('delete'); }
+  function browsePurchases() { showform ('browse'); }
+  function showAll() { showform ('all'); }
+
+</script>
+</head>
+
+<body onload="browsePurchases()">
+
+
+<div class="topnav">
+    <a href="/">Home</a>
+    <a href="customers.html">Customers</a>
+    <a href="dogs.html">Dogs</a>
+    <a href="items.html">Items</a>
+    <a href="purchases.html">Purchases</a>
+    <a href="employees.html">Employees</a>
+    <a href="appointments.html">Appointments</a>
+  </div>
+
+<div id="browse">
+<h1> Purchases </h1>
+<h4> Data drawn from M:N relationship between purchases and inventory. Also includes appointmentID as a nullable FK.</h4>
+
+<table class="content-table">
+    <thead>
+      <tr>
+        <th>Purchase ID</th>
+        <th>Itemized ID</th>
+        <th>Item ID</th>
+        <th>Appointment ID</th>
+        <th>Customer ID</th>
+        <th>Item or Service Name</th>
+        <th>Item Quantity</th>
+        <th>Purchase Date</th>
+        <th>Purchase Total</th>
+        <th colspan = "2">Manage</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for purchase in Purchases %}
+      <tr>
+        {% for key in purchase.keys() %}
+        <td> {{purchase[key]}}</td>
+        {% endfor %}
+        <td><a href="updatePurchase/{{purchase.purchaseId}}" <i class="fa-solid fa-pen-to-square"></i></a></td>
+        <td><a href="deletePurchase/{{purchase.purchaseId}}"<i class="fa-solid fa-trash-can"></i></a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <p><input class = "btn" type="button" value="Log New Purchase" onClick="newPurchase()"></p>
+<p>&nbsp;</p>
+</div> <!-- browse -->
+
+
+<div id="insert">
+  <form method="POST" id="addPurchase">
+      <p><legend><strong>Log New Purchase</strong></legend></p>
+              <label> Purchase ID </label> <select id = "purchaseId" name ="purchaseId" required>
+                {% for purchase in purchasesInfo %}
+                <option value = {{purchase['purchaseId']}} selected> {{purchase['purchaseId']}}</option>
+                {% endfor %}
+              </select>
+              <label> Item ID </label> <select id = "itemId" name ="itemId" required>
+                {% for item in itemsInfo %}
+                <option value = {{item['itemId']}} selected> {{item['itemId'], item['itemName']}}</option>
+                {% endfor %}
+              </select>
+              <label> Item Quantity </label> <input type="number" min="1" name="itemizedQuantity" required>
+
+            </fieldset>
+            <input class="btn" type="submit" id="addPurchase" name= "addPurchase" value="Add Item to Purchase">
+            <input class="btn" type="button" value="Cancel" onClick="browseAppointment()">
+
+
+            </form>
+
+
+
+</div><!-- insert -->
+
+
+<p>&nbsp;</p>
+<div id="update">
+    <form method="POST" id="updatePurchase">
+        <legend><strong>Update Purchase</strong></legend>
+          <fieldset class="fields">
+          <input type="hidden" name="purchaseId" id="updatepurchaseId" value="1">
+          <label> ID: </label> 1
+            <label> Purchase ID </label> <input type="text" name="purchaseId" value="1">
+            <label> Item ID </label> <input type="number" name="itemId" value="1">
+            <label> Item Quantity </label> <input type = "number" name="itemQuantity" value="200">
+      </fieldset>
+          <input class="btn" type="submit" id="UpdateSavePurchase" value="Update Purchase">
+          <input class="btn" type="button" value="Cancel" onClick="browsePurchases()">
+	</form>
+</div><!-- update -->
+<p>&nbsp;</p>
+<div id="delete" style="display: block">
+  <form method="POST" id="deletePurchase">
+      <legend><strong>Delete Purchase</strong></legend>
+          <fieldset class="fields">
+          <p>Are you sure you wish to delete the following?</p>
+          <input type="hidden" name="purchaseId" id="deletepurchaseId" value="1">
+          <label><strong>ID:</strong></label> 1
+            <label> <strong>Purchase ID</strong> </label> 1
+            <label> <strong>Item ID</strong> </label> 1
+            <label> <strong>Item Name</strong> </label> Sparkle Chews
+
+    </fieldset>
+    <input class="btn" type="submit" id="deletePurchase" value="Delete Purchase">
+          <input class="btn" type="button" value="Cancel" onClick="browsePurchases()">
+  </form>
+</div><!-- delete -->
+
+</body>
+
+  </html>

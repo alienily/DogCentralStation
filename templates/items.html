@@ -1,0 +1,128 @@
+<!--  Code credit goes to OSU and the authors of CS340 starter BSG code as well as the Flask template instructions
+ https://github.com/osu-cs340-ecampus/flask-starter-app
+https://canvas.oregonstate.edu/courses/1879182/assignments/8895208?module_item_id=22241454 -->
+<html>
+<head>
+<title>Items</title>
+<link href="/static/style.css" rel="stylesheet" />
+<script src="https://kit.fontawesome.com/2b5a0f3b7b.js" crossorigin="anonymous"></script>
+<script language="JavaScript">
+  function showform(dowhat) {
+    /*
+    * four DIVS: browse, insert, update, delete
+    * this function sets one visible the others not
+    */
+    if (dowhat == 'insert'){
+      document.getElementById('browse').style.display = 'none';
+      document.getElementById('insert').style.display = 'block';
+      document.getElementById('update').style.display = 'none';
+      document.getElementById('delete').style.display = 'none';
+    }
+    else if (dowhat == 'update'){
+      document.getElementById('browse').style.display = 'none';
+      document.getElementById('insert').style.display = 'none';
+      document.getElementById('update').style.display = 'block';
+      document.getElementById('delete').style.display = 'none';
+    }
+    else if (dowhat == 'delete'){
+      document.getElementById('browse').style.display = 'none';
+      document.getElementById('insert').style.display = 'none';
+      document.getElementById('update').style.display = 'none';
+      document.getElementById('delete').style.display = 'block';
+    }
+    else if (dowhat == 'all'){
+      document.getElementById('browse').style.display = 'block';
+      document.getElementById('insert').style.display = 'block';
+      document.getElementById('update').style.display = 'block';
+      document.getElementById('delete').style.display = 'block';
+    }
+    else { //by default display browse
+      document.getElementById('browse').style.display = 'block';
+      document.getElementById('insert').style.display = 'none';
+      document.getElementById('update').style.display = 'none';
+      document.getElementById('delete').style.display = 'none';
+    }
+  }
+  function newItem() { showform('insert'); }
+  function updateItem(itemId) { showform('update'); }
+  function deleteItem(itemId) { showform ('delete'); }
+  function browseItem() { showform ('browse'); }
+  function showAll() { showform ('all'); }
+  function itemSearch(itemQuery) { showform ('search'); }
+</script>
+</head>
+
+<body onload="browseItem()">
+
+
+  <div class="topnav">
+    <a href="/">Home</a>
+    <a href="customers.html">Customers</a>
+    <a href="dogs.html">Dogs</a>
+    <a href="items.html">Items</a>
+    <a href="purchases.html">Purchases</a>
+    <a href="employees.html">Employees</a>
+    <a href="appointments.html">Appointments</a>
+  </div>
+
+<div id="browse">
+<h1> Items </h1>
+
+<table class="content-table">
+    <thead>
+      <tr>
+        <th>Item ID</th>
+        <th>Item Name</th>
+        <th>Category</th>
+        <th>Price</th>
+        <th>Description</th>
+        <th>Quantity</th>
+        <th colspan = "2">Manage</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      {% for item in Items %}
+      <tr>
+        {% for key in item.keys() %}
+        <td> {{item[key]}}</td>
+        {% endfor %}
+        <td><a href="updateItem/{{item.itemId}}"<i class="fa-solid fa-pen-to-square"></i></a></td>
+        <td><a href="deleteItem/{{item.itemId}}"<i class="fa-solid fa-trash-can"></i> </a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <form method="POST" id="searchItems">
+    <fieldset>
+      <legend>Find or Add New Item</legend>
+      <label>Search by name</label>
+      <input type="text" placeholder="Squeaky Toy" name="itemName">
+      <input class = "btn" type="submit" id="searchItems" name="searchItems" onClick="itemSearch()">
+      <input class="btn" type="button" value="Reset" onclick="location.href='items.html'">
+      <p><input class = "btn" type="button" value="Add New Item" onClick="newItem()"></p>
+    </fieldset>
+  </form>
+
+
+<p>&nbsp;</p>
+</div> <!-- browse -->
+<div id="insert">
+    <form method="POST" id="addItem">
+        <legend><strong>Add Item</strong></legend>
+          <fieldset class="fields">
+            <label> Item Name </label> <input type="text" name="itemName" required>
+            <label> Category </label> <input type="text" name="category" required>
+            <label> Price</label> <input type = "number" name="price" step = "0.01" required>
+            <label> Description </label> <input type="text" name="description" required>
+            <label> Quantity </label> <input type = "number" name="quantity" required>
+      </fieldset>
+          <input class="btn" type="submit" id="addItem" name ="addItem" value="Add Item">
+          <input class="btn" type="button" value="Cancel" onClick="browseItem()">
+	</form>
+</div><!-- insert -->
+<p>&nbsp;</p>
+
+</body>
+</html>

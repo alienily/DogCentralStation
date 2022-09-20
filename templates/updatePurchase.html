@@ -1,0 +1,115 @@
+<!--  Code credit goes to OSU and the authors of CS340 starter BSG code as well as the Flask template instructions
+ https://github.com/osu-cs340-ecampus/flask-starter-app
+https://canvas.oregonstate.edu/courses/1879182/assignments/8895208?module_item_id=22241454 -->
+<html>
+
+<head>
+	<title>Update Purchase</title>
+    <link href="/static/style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div>
+        <table class="content-table">
+            <h1> Updating Purchase: </h1>
+            <!-- Access data tuple passed from app.py -->
+            {% if Purchases %}
+                <thead>
+                    <tr>
+                        <th>Purchase ID</th>
+                        <th>Itemized ID</th>
+                        <th>Item ID</th>
+                        <th>Appointment ID</th>
+                        <th>Customer ID</th>
+                        <th>Item or Service Name</th>
+                        <th>Item Quantity</th>
+                        <th>Purchase Date</th>
+                        <th>Purchase Total</th>
+                        <th colspan = "2">Manage</th>
+                      </tr>
+                <tbody>
+                    {% for purchase in Purchases %}
+                    <tr>
+                        {% for key in purchase.keys() %}
+                        <td>{{purchase[key]}}</td> {% endfor %}
+                    </tr>
+                    {% endfor %}
+            {% endif %}
+        </table>
+        <div id="update">
+            <form method="POST" id="updatePurchase" action = "/updatePurchase/{{Purchases[0].purchaseId}}">
+                <legend><strong>Update Purchase</strong></legend>
+                  <fieldset class="fields">
+                  <label> Purchase ID </label>
+                  <select id = "purchaseId" name ="purchaseId" required>
+                   <option value="0">&nbsp;</option>
+                    {% for purchase in purchasesInfo %}
+                     <!-- If the value iterated homeworld matches the value of the homeworld of person currently Editing, pre-select that option -->
+                        {% if purchase['purchaseId'] == Purchases[0].purchaseId %}
+                            <option value="{{ purchase['purchaseId'] }}" selected> {{purchase['purchaseId']}}</option>
+                        {% else %}
+                            <option value="{{ purchase['purchaseId'] }}"> {{purchase['purchaseId']}}</option>
+                        {% endif %}
+                    {% endfor %}
+                  </select>
+
+                    <label> Itemized ID </label>
+                    <select id = "itemizedId" name ="itemizedId" required>
+                        <option value="0">&nbsp;</option>
+                        {% for itemized in itemizedInfo %}
+                            {% if itemized['itemizedId'] == Purchases[0].itemizedId %}
+                                <option value="{{ itemized['itemizedId'] }}" selected> {{itemized['itemizedId']}}</option>
+                            {% else %}
+                                <option value="{{ itemized['itemizedId'] }}"> {{itemized['itemizedId']}}</option>
+                            {% endif %}
+                            {% endfor %}
+                    </select>
+
+                    <label> Item ID </label>
+                    <select id = "itemId" name ="itemId" required>
+                        <option value="0">&nbsp;</option>
+                         {% for item in itemsInfo %}
+                          <!-- If the value iterated homeworld matches the value of the homeworld of person currently Editing, pre-select that option -->
+                             {% if item['itemId'] == Purchases[0].itemId %}
+                                 <option value="{{ item['itemId'] }}" selected> {{item['itemId'],item['itemName']}}</option>
+                             {% else %}
+                                 <option value="{{ item['itemId'] }}"> {{item['itemId'],item['itemName']}}</option>
+                             {% endif %}
+                         {% endfor %}
+                       </select>
+
+                    <label> Appointment ID </label>
+                    <select id = "appointmentId" name ="appointmentId" required>
+                        <option value="0">&nbsp;</option>
+                        {% for appointment in appointmentsInfo %}
+                            {% if appointment['appointmentId'] == Purchases[0].appointmentId %}
+                                <option value="{{ appointment['appointmentId'] }}" selected> {{appointment['appointmentId']}}</option>
+                            {% else %}
+                                <option value="{{ appointment['appointmentId'] }}"> {{appointment['appointmentId']}}</option>
+                            {% endif %}
+                          {% endfor %}
+                        </select>
+
+                    <label> Customer ID </label>
+                    <select id = "customerId" name ="customerId" required>
+                        <option value="0">&nbsp;</option>
+                        {% for customer in customersInfo %}
+                            {% if customer['customerId'] == Purchases[0].customerId %}
+                                <option value="{{ customer['customerId'] }}" selected> {{customer['customerId'],customer['customerFirst']}}</option>
+                            {% else %}
+                                <option value="{{ customer['customerId'] }}"> {{customer['customerId'],customer['customerFirst']}}</option>
+                            {% endif %}
+                          {% endfor %}
+                        </select>
+
+                    <label> Item Name </label> <input type="text" name="itemName" value="{{Purchases[0].itemName}}" required>
+                    <label> Item Quanity </label> <input type="number" name="itemQuantity" value="{{Purchases[0].itemQuantity}}" required>
+                    <label> Purchase Date</label> <input type="datetime-local" name="purchaseDate" value="{{Purchases[0].purchaseDate}}" required>
+                    <label> Purchase Total </label> <input type="number" name="purchaseTotal" step="0.01" value="{{Purchases[0].purchaseTotal}}" required>
+              </fieldset>
+                  <input class="btn" type="submit" id="updatePurchase" name="updatePurchase" value="Update Purchase">
+                  <a href = '/purchases.html'><input class="btn" type="button" value="Cancel" onClick="browsePurchase()"></a>
+            </form>
+        </div><!-- update -->
+    </body>
+</html>

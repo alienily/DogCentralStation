@@ -1,0 +1,68 @@
+<!--  Code credit goes to OSU and the authors of CS340 starter BSG code as well as the Flask template instructions
+ https://github.com/osu-cs340-ecampus/flask-starter-app 
+https://canvas.oregonstate.edu/courses/1879182/assignments/8895208?module_item_id=22241454 -->
+<html>
+
+<head>
+	<title>Update Customer</title>
+    <link href="/static/style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div>
+        <table class="content-table">
+            <h1> Updating Customer: </h1>
+            <!-- Access data tuple passed from app.py -->
+            {% if Customers %}
+                <thead>
+                    <tr>
+                        <th>Customer ID</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Join Date</th>
+                        <th>Email </th>
+                    </tr>
+
+                <tbody>
+                    <!-- Now, iterate through every item in data -->
+                    {% for customer in Customers %}
+                    <tr>
+                        <!-- Then iterate through every key in the current item dictionary -->
+                        {% for key in customer.keys() %}
+
+                        <!-- Create a <td> element with the value of that key in it -->
+                        <td>{{customer[key]}}</td> {% endfor %}
+                    </tr>
+                    {% endfor %}
+            {% endif %}
+        </table>
+        <div id="update">
+            <form method="POST" id="updateCustomer" action="/updateCustomer/{{Customers[0].customerId}}">
+                <legend><strong>Update Customer</strong></legend>
+                    <fieldset class="fields">
+                    <label> Customer ID: </label>
+                    <select id = "customerId" name ="customerId" required>
+                    <option value="0">&nbsp;</option>
+                    {% for customer in customersInfo %}
+                        {% if customer['customerId'] == Customers[0].customerId %}
+                            <option value="{{ customer['customerId'] }}" selected> {{customer['customerId'],customer['customerFirst']}}</option>
+                        {% else %}
+                            <option value="{{ customer['customerId'] }}"> {{customer['customerId'],customer['customerFirst']}}</option>
+                        {% endif %}
+                      {% endfor %}
+                    </select>
+                    <label> First Name </label> <input type="text" name="customerFirst" value="{{Customers[0].customerFirst}}" required>
+                    <label> Last Name </label> <input type="text" name="customerLast" value="{{Customers[0].customerLast}}" required >
+                    <label> Join Date </label> <input type = "date" name="joinDate" value="{{Customers[0].joinDate}}" required>
+                    <label> Email </label> <input type="text" name="email" value="{{Customers[0].email}}">
+              </fieldset>
+                  <input class="btn" type="submit" id="updateCustomer" name = "updateCustomer" value="Update Customer"></a>
+                  <a href= '/customers.html'><input class="btn" type="button" value="Cancel" onClick="browseCustomers()"></a>
+            </form>
+        </div><!-- update -->
+    </body>
+</html>
+
+
+
+

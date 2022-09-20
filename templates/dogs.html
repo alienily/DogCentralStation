@@ -1,0 +1,138 @@
+<!--  Code credit goes to OSU and the authors of CS340 starter BSG code as well as the Flask template instructions
+https://github.com/osu-cs340-ecampus/flask-starter-app
+https://canvas.oregonstate.edu/courses/1879182/assignments/8895208?module_item_id=22241454
+Also credits to kit.fontawesome! https://kit.fontawesome.com/2b5a0f3b7b.js -->
+<html>
+<head>
+<title>Dogs</title>
+<link href="/static/style.css" rel="stylesheet" />
+<script src="https://kit.fontawesome.com/2b5a0f3b7b.js" crossorigin="anonymous"></script>
+<script language="JavaScript">
+  function showform(dowhat) {
+    /*
+    * four DIVS: browse, insert, update, delete
+    * this function sets one visible the others not
+    */
+    if (dowhat == 'insert'){
+      document.getElementById('browse').style.display = 'none';
+      document.getElementById('insert').style.display = 'block';
+      document.getElementById('update').style.display = 'none';
+      document.getElementById('delete').style.display = 'none';
+    }
+    else if (dowhat == 'update'){
+      document.getElementById('browse').style.display = 'none';
+      document.getElementById('insert').style.display = 'none';
+      document.getElementById('update').style.display = 'block';
+      document.getElementById('delete').style.display = 'none';
+    }
+    else if (dowhat == 'delete'){
+      document.getElementById('browse').style.display = 'none';
+      document.getElementById('insert').style.display = 'none';
+      document.getElementById('update').style.display = 'none';
+      document.getElementById('delete').style.display = 'block';
+    }
+    else if (dowhat == 'all'){
+      document.getElementById('browse').style.display = 'block';
+      document.getElementById('insert').style.display = 'block';
+      document.getElementById('update').style.display = 'block';
+      document.getElementById('delete').style.display = 'block';
+    }
+    else { //by default display browse
+      document.getElementById('browse').style.display = 'block';
+      document.getElementById('insert').style.display = 'none';
+      document.getElementById('update').style.display = 'none';
+      document.getElementById('delete').style.display = 'none';
+    }
+  }
+  function newDog() { showform('insert'); }
+  function updateDog(pid) { showform('update'); }
+  function deleteDog(pid) { showform ('delete'); }
+  function browseDogs() { showform ('browse'); }
+  function showAll() { showform ('all'); }
+  function dogSearch(dogQuery) { showform ('search'); }
+</script>
+</head>
+
+<body onload="browseDogs()">
+
+<div class="topnav">
+    <a href="/">Home</a>
+    <a href="customers.html">Customers</a>
+    <a href="dogs.html">Dogs</a>
+    <a href="items.html">Items</a>
+    <a href="purchases.html">Purchases</a>
+    <a href="employees.html">Employees</a>
+    <a href="appointments.html">Appointments</a>
+  </div>
+
+<div id="browse">
+
+<h1> Dogs </h1>
+<table class="content-table">
+    <thead>
+      <tr>
+        <th>Dog ID</th>
+        <th>Name</th>
+        <th>Owner ID</th>
+        <th>Owner Name</th>
+        <th>Size</th>
+        <th>Use Caution</th>
+        <th>Notes </th>
+        <th colspan = "2">Manage</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      {% for dog in Dogs %}
+      <tr>
+        {% for key in dog.keys() %}
+        <td> {{dog[key]}}</td>
+        {% endfor %}
+
+        <td><a href="updateDog/{{dog.dogId}}"<i class="fa-solid fa-pen-to-square"></i></a></td>
+        <td><a href="deleteDog/{{dog.dogId}}"<i class="fa-solid fa-trash-can"></i> </a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+
+  <form method="POST" id="searchDogs">
+    <fieldset>
+      <legend>Find or Add New Dog</legend>
+      <label>Search by Name</label>
+      <input type="text" placeholder="Bowser" name="dogName">
+      <input class = "btn" type="submit" id="searchItems" name="searchDogs" onClick="dogSearch()">
+      <input class="btn" type="button" value="Reset" onclick="location.href='dogs.html'">
+      <p><input class = "btn" type="button" value="Add New Dog" onClick="newDog()"></p>
+    </fieldset>
+  </form>
+
+<p>&nbsp;</p>
+</div> <!-- browse -->
+<div id="insert">
+    <form method="POST" id="addDog">
+        <legend><strong>Add Dog</strong></legend>
+          <fieldset class="fields">
+            <label> Dog Name </label> <input type="text" name="dogName" required>
+            <label> Customer ID </label> <select id = "customerId" name ="customerId" required>
+            {% for customer in customersInfo %}
+            <option value = {{customer['customerId']}} selected> {{customer['customerId'], customer['customerFirst']}}</option>
+            {% endfor %}
+          </select>
+          <p></p>
+            <label> Size </label> <input type = "text" name="size" required>
+            <label> Use Caution?</label> <input type="radio" name="useCaution" checked> No
+            <input type = "radio" name = "useCaution"> YES
+            <p></p>
+            <label> Notes </label> <input type = "text" name="dogNote">
+      </fieldset>
+          <input class="btn" type="submit" id="addDog" name ="addDog" value="Add Dog">
+          <input class="btn" type="button" value="Cancel" onClick="browseDogs()">
+	</form>
+</div><!-- insert -->
+<p>&nbsp;</p>
+
+
+</body>
+  </html>

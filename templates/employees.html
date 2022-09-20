@@ -1,0 +1,120 @@
+<!--  Code credit goes to OSU and the authors of CS340 starter BSG code as well as the Flask template instructions
+ https://github.com/osu-cs340-ecampus/flask-starter-app
+https://canvas.oregonstate.edu/courses/1879182/assignments/8895208?module_item_id=22241454 -->
+<html>
+<head>
+<title>Employees</title>
+<link href="/static/style.css" rel="stylesheet" />
+<script src="https://kit.fontawesome.com/2b5a0f3b7b.js" crossorigin="anonymous"></script>
+<script language="JavaScript">
+  function showform(dowhat) {
+    /*
+    * four DIVS: browse, insert, update, delete
+    * this function sets one visible the others not
+    */
+    if (dowhat == 'insert'){
+      document.getElementById('browse').style.display = 'none';
+      document.getElementById('insert').style.display = 'block';
+      document.getElementById('update').style.display = 'none';
+      document.getElementById('delete').style.display = 'none';
+    }
+    else if (dowhat == 'update'){
+      document.getElementById('browse').style.display = 'none';
+      document.getElementById('insert').style.display = 'none';
+      document.getElementById('update').style.display = 'block';
+      document.getElementById('delete').style.display = 'none';
+    }
+    else if (dowhat == 'delete'){
+      document.getElementById('browse').style.display = 'none';
+      document.getElementById('insert').style.display = 'none';
+      document.getElementById('update').style.display = 'none';
+      document.getElementById('delete').style.display = 'block';
+    }
+    else if (dowhat == 'all'){
+      document.getElementById('browse').style.display = 'block';
+      document.getElementById('insert').style.display = 'block';
+      document.getElementById('update').style.display = 'block';
+      document.getElementById('delete').style.display = 'block';
+    }
+    else { //by default display browse
+      document.getElementById('browse').style.display = 'block';
+      document.getElementById('insert').style.display = 'none';
+      document.getElementById('update').style.display = 'none';
+      document.getElementById('delete').style.display = 'none';
+    }
+  }
+  function newEmployee() { showform('insert'); }
+  function updateEmployee(pid) { showform('update'); }
+  function deleteEmployee(pid) { showform ('delete'); }
+  function browseEmployees() { showform ('browse'); }
+  function showAll() { showform ('all'); }
+  function employeeSearch(employeeQuery) { showform ('search'); }
+</script>
+</head>
+
+<body onload="browseEmployees()">
+<div class="topnav">
+    <a href="/">Home</a>
+    <a href="customers.html">Customers</a>
+    <a href="dogs.html">Dogs</a>
+    <a href="items.html">Items</a>
+    <a href="purchases.html">Purchases</a>
+    <a href="employees.html">Employees</a>
+    <a href="appointments.html">Appointments</a>
+  </div>
+
+<div id="browse">
+<h1> Employees </h1>
+<table class="content-table">
+    <thead>
+      <tr>
+        <th>Employee ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th> Position</th>
+        <th colspan = "2">Manage</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for employee in Employees %}
+      <tr>
+        {% for key in employee.keys() %}
+        <td> {{employee[key]}}</td>
+        {% endfor %}
+        <td><a href="updateEmployee/{{employee.employeeId}}"<i class="fa-solid fa-pen-to-square"></i></a></td>
+        <td><a href="deleteEmployee/{{employee.employeeId}}"<i class="fa-solid fa-trash-can"></i> </a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <form method="POST" id="searchEmployees">
+    <fieldset>
+      <legend>Find or Add New Employee</legend>
+      <label>Search by Name</label>
+      <input type="text" placeholder="John Smith" id="employeeName" name="employeeName">
+      <input class = "btn" type="submit" id="searchEmployees" name="searchEmployees" onClick="employeeSearch()">
+      <input class="btn" type="button" value="Reset" onclick="location.href='employees.html'">
+      <p><input class = "btn" type="button" value="Add New Employee" onClick="newEmployee()"></p>
+    </fieldset>
+  </form>
+
+  <p>&nbsp;</p>
+  </div> <!-- browse -->
+  <div id="insert">
+      <form method="POST" id="addEmployee">
+          <legend><strong>Add Employee</strong></legend>
+            <fieldset class="fields">
+              <label> First Name </label> <input type="text" name="employeeFirst" required>
+              <label> Last Name </label> <input type="text" name="employeeLast" required>
+              <label> Position </label> <input type = "text" name="position" required>
+        </fieldset>
+            <input class="btn" type="submit" id="addEmployee" name="addEmployee" value="Add Employee">
+            <input class="btn" type="button" value="Cancel" onClick="browseEmployees()">
+    </form>
+  </div><!-- insert -->
+  <p>&nbsp;</p>
+
+
+  </body>
+  </html>

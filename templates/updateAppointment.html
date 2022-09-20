@@ -1,0 +1,99 @@
+<!--  Code credit goes to OSU and the authors of CS340 starter BSG code as well as the Flask template instructions
+ https://github.com/osu-cs340-ecampus/flask-starter-app
+https://canvas.oregonstate.edu/courses/1879182/assignments/8895208?module_item_id=22241454 -->
+<html>
+
+<head>
+	<title>Update Appointments</title>
+    <link href="/static/style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div>
+        <table class="content-table">
+            <h1> Updating Appointment: </h1>
+            <!-- Access data tuple passed from app.py -->
+            {% if Appointments %}
+                <thead>
+                    <tr>
+                        <th>Appointment ID</th>
+                        <th>Employee ID</th>
+                        <th>Employee's First Name</th>
+                        <th>Date</th>
+                        <th>Customer ID</th>
+                        <th>Dog ID</th>
+                        <th>Dog's Name</th>
+                        <th>Treatment</th>
+                        <th>UseCaution</th>
+                        <th>Notes</th>
+                      </tr>
+
+                <tbody>
+                    {% for appointment in Appointments %}
+                    <tr>
+                      {% for key in appointment.keys() %}
+
+                      <td> {{appointment[key]}}</td> {% endfor %}
+                    </tr>
+                    {% endfor %}
+            {% endif %}
+        </table>
+        <div id="update">
+            <form method="POST" id="updateAppointment" action="/updateAppointment/{{Appointments[0].appointmentId}}">
+                <legend><strong>Update Appointment</strong></legend>
+                  <fieldset class="fields">
+                  <label> Appointment ID: </label>
+                  <select id = "appointmentId" name ="appointmentId" required>
+                    <option value="0">&nbsp;</option>
+                    {% for appointment in appointmentsInfo %}
+                        {% if appointment['appointmentId'] == Appointments[0].appointmentId %}
+                            <option value="{{ appointment['appointmentId'] }}" selected> {{appointment['appointmentId']}}</option>
+                        {% else %}
+                            <option value="{{ appointment['appointmentId'] }}"> {{appointment['appointmentId']}}</option>
+                        {% endif %}
+                      {% endfor %}
+                    </select>
+                    <label> Employee ID </label>
+                    <select id = "employeeId" name ="employeeId" required>
+                        <option value="0">&nbsp;</option>
+                        {% for employee in employeesInfo %}
+                            {% if employee['employeeId'] == Appointments[0].employeeId %}
+                                <option value="{{ employee['employeeId'] }}" selected> {{employee['employeeId'], employee['employeeFirst']}}</option>
+                            {% else %}
+                                <option value="{{ employee['employeeId'] }}"> {{employee['employeeId'],employee['employeeFirst']}}</option>
+                            {% endif %}
+                            {% endfor %}
+                    </select>
+                    <label> Date Time </label> <input type="datetime-local" name="appointmentDate" value = "{{Appointments[0].appointmentDate}}" required>
+
+                    <label> Customer ID </label>
+                    <select id = "customerId" name ="customerId" required>
+                        <option value="0">&nbsp;</option>
+                        {% for customer in customersInfo %}
+                            {% if customer['customerId'] == Appointments[0].customerId %}
+                                <option value="{{ customer['customerId'] }}" selected> {{customer['customerId'], customer['customerFirst']}}</option>
+                            {% else %}
+                                <option value="{{ customer['customerId'] }}"> {{customer['customerId'],customer['customerFirst']}}</option>
+                            {% endif %}
+                            {% endfor %}
+                    </select>
+
+                    <label> Dog ID </label>
+                    <select id = "dogId" name ="dogId" required>
+                        <option value="0">&nbsp;</option>
+                        {% for dog in dogsInfo %}
+                            {% if dog['dogId'] == Appointments[0].dogId %}
+                                <option value="{{ dog['dogId'] }}" selected> {{dog['dogId'], dog['dogName']}}</option>
+                            {% else %}
+                                <option value="{{ dog['dogId'] }}"> {{dog['dogId'],dog['dogName']}}</option>
+                            {% endif %}
+                            {% endfor %}
+                    </select>
+                    <label> Treatment </label><input type = "text" name = "treatment" value = "{{Appointments[0].treatment}}" required>
+              </fieldset>
+                  <input class="btn" type="submit" id="updateAppointment" name="updateAppointment" value="Update Appointment">
+                  <a href= '/appointments.html'><input class="btn" type="button" value="Cancel" onClick="browseAppointment()"></a>
+            </form>
+        </div><!-- update -->
+    </body>
+</html>

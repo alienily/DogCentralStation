@@ -1,0 +1,48 @@
+<!--  Code credit goes to OSU and the authors of CS340 starter BSG code as well as the Flask template instructions
+ https://github.com/osu-cs340-ecampus/flask-starter-app
+https://canvas.oregonstate.edu/courses/1879182/assignments/8895208?module_item_id=22241454 -->
+<link href="/static/style.css" rel="stylesheet" />
+
+<div class="topnav">
+    <a href="/">Home</a>
+    <a href="customers.html">Customers</a>
+    <a href="dogs.html">Dogs</a>
+    <a href="items.html">Items</a>
+    <a href="purchases.html">Purchases</a>
+    <a href="employees.html">Employees</a>
+    <a href="appointments.html">Appointments</a>
+  </div>
+
+
+<img style="display: inline; border-radius: 50%; float: left;" title="Cougar" src = "/static/cougar.jpg" style="max-width:20%">
+<img style="display: inline; border-radius: 50%; float: right;" title="Zuko" src = "/static/zuko.jpg" style="max-width:20%">
+
+
+<h2>You have now arrived at</h2>
+<h1>DOG CENTRAL STATION</h1>
+
+<div class ="info">
+    <h4>Follow the links below to view data for each corresponding table in the SQL database:</h4>
+    <dl>
+        <dt>
+        <a href="appointments.html">Appointments</a></dt>
+        <dd>- View upcoming dog grooming appointments. This is created from an intersection table between our Appointments and Employees Entities.
+            This is because there is a M:N relationship here as one dog may require multiple employees to be groomed. Like a giant fluffy Samoyed!</dd>
+        <dt><a href="customers.html">Customers</a></dt>
+        <dd>- List of customer information including name and membership date. Includes Search functionality.</dd>
+        <dt><a href="dogs.html">Dogs</a></dt>
+        <dd>- List of dog information used when setting appointments. Includes search functionality and a
+             Boolean caution field for those especially vicious little dogs that like to bite groomers hands!</dd>
+        <dt><a href="employees.html">Employees</a></dt>
+        <dd>- List of staff including names and positions at the company. Includes Search functionality.</dd>
+        <dt><a href="items.html">Items</a></dt>
+        <dd>- List of current inventory including names, prices and available quantity. Includes Search functionality.</dd>
+        <dt><a href="purchases.html">Purchases</a></dt>
+        <dd>- Basically a ledger, a book or balancesheet showing itemized purchases. Each row is drawn from our PurchasesItemized table and contains the purchase ID,
+            item ID, item name and purchase date of each itemized...purchase. Confusing nomenclature here but we settled on using this intersection table as it tracks
+            the quantity of a single item sold through a M:N relationship between our Purchases and Items tables.</dd>
+    </dl>
+
+</div>
+
+<p>

@@ -1,0 +1,139 @@
+<!--  Code credit goes to OSU and the authors of CS340 starter BSG code as well as the Flask template instructions
+ https://github.com/osu-cs340-ecampus/flask-starter-app
+https://canvas.oregonstate.edu/courses/1879182/assignments/8895208?module_item_id=22241454 -->
+
+<html>
+<head>
+<title>Customers</title>
+<link href="/static/style.css" rel="stylesheet" />
+<script src="https://kit.fontawesome.com/2b5a0f3b7b.js" crossorigin="anonymous"></script>
+<script language="JavaScript">
+  function showform(dowhat) {
+    /*
+    * four DIVS: browse, insert, update, delete
+    * this function sets one visible the others not
+    */
+    if (dowhat == 'insert'){
+      document.getElementById('browse').style.display = 'none';
+      document.getElementById('insert').style.display = 'block';
+      document.getElementById('update').style.display = 'none';
+      document.getElementById('delete').style.display = 'none';
+    }
+    else if (dowhat == 'update'){
+      document.getElementById('browse').style.display = 'none';
+      document.getElementById('insert').style.display = 'none';
+      document.getElementById('update').style.display = 'block';
+      document.getElementById('delete').style.display = 'none';
+    }
+    else if (dowhat == 'delete'){
+      document.getElementById('browse').style.display = 'none';
+      document.getElementById('insert').style.display = 'none';
+      document.getElementById('update').style.display = 'none';
+      document.getElementById('delete').style.display = 'block';
+    }
+    else if (dowhat == 'all'){
+      document.getElementById('browse').style.display = 'block';
+      document.getElementById('insert').style.display = 'block';
+      document.getElementById('update').style.display = 'block';
+      document.getElementById('delete').style.display = 'block';
+    }
+    else if (dowhat == 'search'){
+      document.getElementById('browse').style.display = 'block';
+      document.getElementById('insert').style.display = 'block';
+      document.getElementById('update').style.display = 'block';
+      document.getElementById('delete').style.display = 'block';
+    }
+    else { //by default display browse
+      document.getElementById('browse').style.display = 'block';
+      document.getElementById('insert').style.display = 'none';
+      document.getElementById('update').style.display = 'none';
+      document.getElementById('delete').style.display = 'none';
+    }
+  }
+  function newCustomer() { showform('insert'); }
+  function updateCustomer(customerId) { showform('update'); }
+  function deleteCustomer(customerId) { showform ('delete'); }
+  function browseCustomers() { showform ('browse'); }
+  function showAll() { showform ('all'); }
+  function customerSearch(customerQuery) { showform ('search'); }
+</script>
+</head>
+
+
+<body onload="browseCustomers()">
+<div class="topnav">
+    <a href="/">Home</a>
+    <a href="customers.html">Customers</a>
+    <a href="dogs.html">Dogs</a>
+    <a href="items.html">Items</a>
+    <a href="purchases.html">Purchases</a>
+    <a href="employees.html">Employees</a>
+    <a href="appointments.html">Appointments</a>
+  </div>
+
+<div id="browse">
+<h1> Customers </h1>
+
+<table class="content-table">
+    <thead>
+      <tr>
+        <th>Customer ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Join Date</th>
+        <th>Email </th>
+        <th colspan = "2">Manage</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      {% for customer in Customers %}
+      <tr>
+        {% for key in customer.keys() %}
+        <td> {{customer[key]}}</td>
+        {% endfor %}
+        <td><a href="updateCustomer/{{customer.customerId}}"<i class="fa-solid fa-pen-to-square"></i></a></td>
+        <td><a href="deleteCustomer/{{customer.customerId}}"<i class="fa-solid fa-trash-can"></i> </a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div id="search">
+    <form method="POST" id="searchCustomers">
+      <fieldset>
+        <legend>Find or Add New Customer</legend>
+        <label>Search by Name</label>
+        <input type="text" placeholder="John Smith" id="customerName" name="customerName">
+        <label>Search by Email</label>
+        <input type="text" placeholder="jsmith@hello.com" id="customerEmail" name="customerEmail">
+        <input class = "btn" type="submit" id="searchCustomers" name="searchCustomers" onClick="customerSearch()">
+        <input class="btn" type="button" value="Reset" onclick="location.href='customers.html'">
+        <p><input class = "btn" type="button" value="Add New Customer" onClick="newCustomer()"></p>
+      </fieldset>
+
+    </form>
+
+  </div>
+
+
+<p>&nbsp;</p>
+</div> <!-- browse -->
+
+<div id="insert">
+    <form method="POST" id="addCustomer">
+        <legend><strong>Add Customer</strong></legend>
+          <fieldset class="fields">
+            <label> First Name </label> <input type="text" name="customerFirst" required>
+            <label> Last Name </label> <input type="text" name="customerLast" required>
+            <label> Join Date </label> <input type = "date" name="joinDate" required>
+            <label> Email </label> <input type="text" name="email">
+      </fieldset>
+          <input class="btn" type="submit" id="addCustomer" name = "addCustomer" value="Add Customer">
+          <input class="btn" type="button" value="Cancel" onClick="browseCustomers()">
+	</form>
+</div><!-- insert -->
+<p>&nbsp;</p>
+
+</body>
+  </html>

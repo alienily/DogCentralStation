@@ -1,0 +1,134 @@
+<!--  Code credit goes to OSU and the authors of CS340 starter BSG code as well as the Flask template instructions
+ https://github.com/osu-cs340-ecampus/flask-starter-app
+https://canvas.oregonstate.edu/courses/1879182/assignments/8895208?module_item_id=22241454 -->
+<html>
+<head>
+<title>Appointments</title>
+<link href="/static/style.css" rel="stylesheet" />
+<script src="https://kit.fontawesome.com/2b5a0f3b7b.js" crossorigin="anonymous"></script>
+<script language="JavaScript">
+  function showform(dowhat) {
+    /*
+    * four DIVS: browse, insert, update, delete
+    * this function sets one visible the others not
+    */
+    if (dowhat == 'insert'){
+      document.getElementById('browse').style.display = 'none';
+      document.getElementById('insert').style.display = 'block';
+      document.getElementById('update').style.display = 'none';
+      document.getElementById('delete').style.display = 'none';
+    }
+    else if (dowhat == 'update'){
+      document.getElementById('browse').style.display = 'none';
+      document.getElementById('insert').style.display = 'none';
+      document.getElementById('update').style.display = 'block';
+      document.getElementById('delete').style.display = 'none';
+    }
+    else if (dowhat == 'delete'){
+      document.getElementById('browse').style.display = 'none';
+      document.getElementById('insert').style.display = 'none';
+      document.getElementById('update').style.display = 'none';
+      document.getElementById('delete').style.display = 'block';
+    }
+    else if (dowhat == 'all'){
+      document.getElementById('browse').style.display = 'block';
+      document.getElementById('insert').style.display = 'block';
+      document.getElementById('update').style.display = 'block';
+      document.getElementById('delete').style.display = 'block';
+    }
+    else { //by default display browse
+      document.getElementById('browse').style.display = 'block';
+      document.getElementById('insert').style.display = 'none';
+      document.getElementById('update').style.display = 'none';
+      document.getElementById('delete').style.display = 'none';
+    }
+  }
+  function newAppointment() { showform('insert'); }
+  function updateAppointment(pid) { showform('update'); }
+  function deleteAppointment(pid) { showform ('delete'); }
+  function browseAppointment() { showform ('browse'); }
+  function showAll() { showform ('all'); }
+</script>
+</head>
+
+<body onload="browseAppointment()">
+
+<div class="topnav">
+    <a href="/">Home</a>
+    <a href="customers.html">Customers</a>
+    <a href="dogs.html">Dogs</a>
+    <a href="items.html">Items</a>
+    <a href="purchases.html">Purchases</a>
+    <a href="employees.html">Employees</a>
+    <a href="appointments.html">Appointments</a>
+  </div>
+
+<div id="browse">
+<h1> Appointments </h1>
+<h4> Data drawn from M:N relationship between Appointments and Employees</h4>
+<table class="content-table">
+    <thead>
+      <tr>
+        <th>Appointment ID</th>
+        <th>Employee ID</th>
+        <th>Employee's First Name</th>
+        <th>Date</th>
+        <th>Customer ID</th>
+        <th>Dog ID</th>
+        <th>Dog's Name</th>
+        <th>Treatment</th>
+        <th>UseCaution</th>
+        <th>Notes</th>
+        <th colspan = "2">Manage</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for appointment in Appointments %}
+      <tr>
+        {% for key in appointment.keys() %}
+        <td> {{appointment[key]}}</td>
+        {% endfor %}
+        <td><a href="updateAppointment/{{appointment.appointmentId}}" <i class="fa-solid fa-pen-to-square"></i></a></td>
+        <td><a href="deleteAppointment/{{appointment.appointmentId}}"<i class="fa-solid fa-trash-can"></i></a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <p><input class = "btn" type="button" value="Add New Appointment" onClick="newAppointment()"></p>
+<p>&nbsp;</p>
+
+</div> <!-- browse -->
+<div id="insert">
+    <form method="POST" id="addAppointment">
+        <legend><strong>Add Appointment</strong></legend>
+          <fieldset class="fields">
+            <label> Employee ID </label> <select id = "employeeId" name ="employeeId" required>
+              {% for employee in employeesInfo %}
+              <option value = {{employee['employeeId']}} selected> {{employee['employeeId'], employee['employeeFirst']}}</option>
+              {% endfor %}
+            </select>
+            <label> Date Time </label> <input type="datetime-local" name="appointmentDate" required>
+            <label> Customer ID </label> <select id = "customerId" name ="customerId" required>
+              {% for customer in customersInfo %}
+              <option value = {{customer['customerId']}} selected> {{customer['customerId'], customer['customerFirst']}}</option>
+              {% endfor %}
+            </select>
+            <label> Dog ID </label> <select id = "dogId" name ="dogId" required>
+              {% for dog in dogsInfo %}
+              <option value = {{dog['dogId']}} selected> {{dog['dogId'], dog['dogName']}}</option>
+              {% endfor %}
+            </select>
+            <label> Treatment </label><input type = "text" name = "treatment" required>
+      </fieldset>
+          <input class="btn" type="submit" id="addAppointment" name= "addAppointment" value="Add Appointment">
+          <input class="btn" type="button" value="Cancel" onClick="browseAppointment()">
+	</form>
+</div><!-- insert -->
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+</body>
+  </html>

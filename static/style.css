@@ -1,0 +1,104 @@
+* {
+    font-family: sans-serif; /* Change your font family */
+  }
+
+  h1 {
+    text-align: center;
+  }
+
+  h2 {
+    text-align: center;
+  }
+
+  h4 {
+    text-align: center;
+  }
+
+  img {
+    padding-top: 50px;
+    padding-right: 15px;
+    padding-left: 15px;
+    max-width:20%;
+  }
+  .btn {
+    padding:0.5em 1.0em;
+    border-radius: 8px;
+    color:#fff;
+    background-color:#ffb703;
+    font-size:0.9em;
+    border:0;
+    cursor:pointer;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+.info{
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  flex-direction: row;
+  padding: 5px;
+}
+  /* Add a background color to the top navigation */
+.topnav {
+    background-color: #219ebc;
+    overflow: hidden;
+  }
+
+  /* Style the links inside the navigation bar REFERENCED W3Schools
+  https://www.w3schools.com/howto/howto_js_topnav.asp */
+.topnav a {
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+  }
+
+  /* Change the color of links on hover */
+.topnav a:hover {
+  color: #ffb703;
+}
+
+
+/* Style for table REFERENCED https://www.youtube.com/watch?v=biI9OFH6Nmg */
+
+  .content-table {
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 0.9em;
+    min-width: 400px;
+    border-radius: 5px 5px 0 0;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .content-table thead tr {
+    background-color: #219ebc;
+    color: #ffffff;
+    text-align: left;
+    font-weight: bold;
+  }
+
+  .content-table th,
+  .content-table td {
+    padding: 12px 15px;
+  }
+
+  .content-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+  }
+
+  .content-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+  }
+
+  .content-table tbody tr:last-of-type {
+    border-bottom: 2px solid #219ebc;
+  }
+
+  .content-table tbody tr:hover{
+    background-color: #ffb703;
+  }

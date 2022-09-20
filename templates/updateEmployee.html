@@ -1,0 +1,61 @@
+<!--  Code credit goes to OSU and the authors of CS340 starter BSG code as well as the Flask template instructions
+ https://github.com/osu-cs340-ecampus/flask-starter-app
+https://canvas.oregonstate.edu/courses/1879182/assignments/8895208?module_item_id=22241454 -->
+<html>
+
+<head>
+	<title>Update Employee</title>
+    <link href="/static/style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div>
+        <table class="content-table">
+            <h1> Updating Employee: </h1>
+            <!-- Access data tuple passed from app.py -->
+            {% if Employees %}
+                <thead>
+                    <tr>
+                        <th>Employee ID</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Position</th>
+                    </tr>
+
+                <tbody>
+                    {% for employee in Employees %}
+                    <tr>
+                        {% for key in employee.keys() %}
+                        <td>{{employee[key]}}</td> {% endfor %}
+                    </tr>
+                    {% endfor %}
+            {% endif %}
+        </table>
+
+        <div id="update">
+            <form method="POST" id="updateEmployee" action = "/updateEmployee/{{Employees[0].employeeId}}">
+                <legend><strong>Update Employee</strong></legend>
+                  <fieldset class="fields">
+                  <label> Employee ID: </label>
+                  <select id = "employeeId" name ="employeeId" required>
+                    <option value="0">&nbsp;</option>
+                     {% for employee in employeesInfo %}
+                      <!-- If the value iterated homeworld matches the value of the homeworld of person currently Editing, pre-select that option -->
+                         {% if employee['employeeId'] == Employees[0].employeeId %}
+                             <option value="{{ employee['employeeId'] }}" selected> {{employee['employeeId'],employee['employeeFirst']}}</option>
+                         {% else %}
+                             <option value="{{ employee['employeeId'] }}"> {{employee['employeeId'],employee['employeeFirst']}}</option>
+                         {% endif %}
+                     {% endfor %}
+                   </select>
+                    <label> First Name </label> <input type="text" name="employeeFirst" value ="{{Employees[0].employeeFirst}}" required>
+                    <label> Last Name </label> <input type="text" name="employeeLast" value ="{{Employees[0].employeeLast}}" required>
+                    <label> Position </label> <input type = "text" name="position" value ="{{Employees[0].position}}" required>
+              </fieldset>
+                  <input class="btn" type="submit" id="updateEmployee" name="updateEmployee" value="Update Employee Info">
+                  <a href = '/employees.html'><input class="btn" type="button" value="Cancel" onClick="browseEmployees()"></a>
+          </form>
+        </div><!-- update -->
+    </body>
+</html>
+

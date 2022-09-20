@@ -1,0 +1,87 @@
+<!--  Code credit goes to OSU and the authors of CS340 starter BSG code as well as the Flask template instructions
+ https://github.com/osu-cs340-ecampus/flask-starter-app
+https://canvas.oregonstate.edu/courses/1879182/assignments/8895208?module_item_id=22241454 -->
+<html>
+
+<head>
+	<title>Update Dog</title>
+    <link href="/static/style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div>
+        <table class="content-table">
+            <h1> Updating Dog: </h1>
+            <!-- Access data tuple passed from app.py -->
+            {% if Dogs %}
+                <thead>
+                    <tr>
+                        <th>Dog ID</th>
+                        <th>Name</th>
+                        <th>Owner ID</th>
+                        <th>Owner Name</th>
+                        <th>Size</th>
+                        <th>Use Caution</th>
+                        <th>Notes </th>
+                    </tr>
+
+                <tbody>
+                    {% for dog in Dogs %}
+                    <tr>
+                      {% for key in dog.keys() %}
+
+                      <td> {{dog[key]}}</td> {% endfor %}
+                    </tr>
+                    {% endfor %}
+            {% endif %}
+        </table>
+        <div id="update">
+            <form method="POST" id="updateDog" action="/updateDog/{{Dogs[0].dogId}}">
+                <legend><strong>Update Dog</strong></legend>
+                  <fieldset class="fields">
+                  <label> Dog ID: </label>
+                  <select id = "dogId" name ="dogId" required>
+                    <option value="0">&nbsp;</option>
+                    {% for dog in dogsInfo %}
+                        {% if dog['dogId'] == Dogs[0].dogId %}
+                            <option value="{{ dog['dogId'] }}" selected> {{dog['dogId'], dog['dogName']}}</option>
+                        {% else %}
+                            <option value="{{ dog['dogId'] }}"> {{dog['dogId'],dog['dogName']}}</option>
+                        {% endif %}
+                      {% endfor %}
+                    </select>
+                    <label> Name </label> <input type="text" name="dogName" value={{Dogs[0].dogName}} required>
+                    <label> Customer ID </label>
+                    <select id = "customerId" name ="customerId" required>
+                        <option value="0">&nbsp;</option>
+                        {% for customer in customersInfo %}
+                            {% if customer['customerId'] == Dogs[0].customerId %}
+                                <option value="{{ customer['customerId'] }}" selected> {{customer['customerId'], customer['customerFirst']}}</option>
+                            {% else %}
+                                <option value="{{ customer['customerId'] }}"> {{customer['customerId'],customer['customerFirst']}}</option>
+                            {% endif %}
+                            {% endfor %}
+                    </select>
+                    <label for ="size"> Size </label> 
+                    <select name="size" id="cars">
+                        <option value="toy">Toy</option>
+                        <option value="small">Small</option>
+                        <option value="medium">Medium</option>
+                        <option value="large">Large</option>
+                        <option value="huge">HUGE</option>
+                      </select>
+   
+
+
+                    <label> Use Caution?</label> <input type="radio" name="useCaution" value = {{Dogs[0].useCaution}} checked> No
+                    <input type = "radio" name = "useCaution"> Yes
+                    <p></p>
+                    <label> Notes </label> <input type="text" name="dogNote" value = '{{Dogs[0].dogNote}}'>
+              </fieldset>
+                  <input class="btn" type="submit" id="updateDog" name="updateDog" value="Update Dog">
+                  <a href= '/dogs.html'><input class="btn" type="button" value="Cancel" onClick="browseDogs()"></a>
+            </form>
+        </div><!-- update -->
+    </body>
+</html>
+
