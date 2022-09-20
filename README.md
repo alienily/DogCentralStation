@@ -5,5 +5,10 @@ Dog Central Station is a Seattle-based pet store and dog grooming salon focused 
 
 This new database will record customer information, sales, store inventory, dog grooming appointments and staff management. This data can be used for future business decisions, marketing campaigns, and budget forecasts. The new database infrastructure is capable of recording millions of more data entries and has a 50% faster data retrieval speed compared to the old system.
 
+## Technologies Used
+Python 
+HTML/CSS
+SQL
+Flask
 
 ## Home Page
